@@ -64,19 +64,43 @@
 		B5A44F1D27E6521700604026 /* gameSet */ = {
 			isa = PBXGroup;
 			children = (
-				B5A44F1E27E6521700604026 /* AppDelegate.swift */,
-				B5A44F2027E6521700604026 /* SceneDelegate.swift */,
-				B56A3D4E27F0EBB700AC6B4C /* GameSet.swift */,
-				B5A44F2227E6521700604026 /* ViewController.swift */,
-				B5A44F3227E652BE00604026 /* Main.storyboard */,
-				B5231A8C27EE2ACE0098618A /* PlayingCardsViewButton.swift */,
-				B5231A5E27E715DA0098618A /* Cards.swift */,
-				B5231A6227E71EFB0098618A /* CardDeck.swift */,
-				B5A44F2727E6521800604026 /* Assets.xcassets */,
+				B5D0A8A127FA35E700DDE953 /* Supporting Files */,
+				B5D0A8A027FA35C600DDE953 /* Controller */,
+				B5D0A89F27FA35AE00DDE953 /* Model */,
 				B5A44F2927E6521800604026 /* LaunchScreen.storyboard */,
-				B5A44F2C27E6521800604026 /* Info.plist */,
 			);
 			path = gameSet;
+			sourceTree = "<group>";
+		};
+		B5D0A89F27FA35AE00DDE953 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B5A44F3227E652BE00604026 /* Main.storyboard */,
+				B56A3D4E27F0EBB700AC6B4C /* GameSet.swift */,
+				B5231A5E27E715DA0098618A /* Cards.swift */,
+				B5231A6227E71EFB0098618A /* CardDeck.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B5D0A8A027FA35C600DDE953 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				B5231A8C27EE2ACE0098618A /* PlayingCardsViewButton.swift */,
+				B5A44F2227E6521700604026 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		B5D0A8A127FA35E700DDE953 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B5A44F2C27E6521800604026 /* Info.plist */,
+				B5A44F2727E6521800604026 /* Assets.xcassets */,
+				B5A44F1E27E6521700604026 /* AppDelegate.swift */,
+				B5A44F2027E6521700604026 /* SceneDelegate.swift */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
