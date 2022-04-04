@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct Cards: CustomStringConvertible {
+struct Cards: CustomStringConvertible, Equatable {
 
     var description: String { return ("\(howMany)\(shape)\(fill)\(color)")}
     var howMany: Variant
@@ -27,7 +27,7 @@ struct Cards: CustomStringConvertible {
     }
 
     static func isSet(cards: [Cards]) -> Bool {
-        guard cards.count == 3 else {return false}
+        guard cards.count == 3 else { return false }
         let sum = [
         cards.reduce(0, { $0 + $1.howMany.rawValue}),
         cards.reduce(0, { $0 + $1.color.rawValue}),
