@@ -51,27 +51,38 @@ final class GameSet {
         }
     }
 
-    func removeCards() {
-        if isSet(for: cardsTryMatched) == true {
-            for index in cardsOnTable.indices {
-                for ind in cardsTryMatched.indices {
-                    if cardsOnTable[index] == cardsTryMatched[ind] {
-                        cardsOnTable.remove(at: index)
-                    }
-                }
-            }
-            cardsRemoved += cardsTryMatched
-            cardsTryMatched.removeAll()
-        }
-    }
+//    func removeCards() {
+//        if isSet(for: isSelected) == true {
+//            for index in cardsOnTable.indices {
+//                for ind in cardsTryMatched.indices {
+//                    if cardsOnTable[index] == cardsTryMatched[ind] {
+//                        cardsOnTable.remove(at: index)
+//                    }
+//                }
+//            }
+//            cardsRemoved += cardsTryMatched
+//            cardsTryMatched.removeAll()
+//        }
+//    }
 
     func replaceCards() {
         if isSet(for: cardsTryMatched) == true, let threeCards = takeThreeCardsFromDeck() {
             for idx in 0..<3 {
                 if let indexMatched = cardsOnTable.firstIndex(of: cardsTryMatched[idx]) {
-                    cardsOnTable [indexMatched ] = threeCards[idx]
+                    cardsOnTable[indexMatched] = threeCards[idx]
                 }
             }
+            cardsRemoved += cardsTryMatched
+            print(cardsTryMatched, cardsRemoved)
+            cardsTryMatched.removeAll()
+        } else {
+//            for index in cardsOnTable.indices {
+//                for ind in cardsTryMatched.indices {
+//                    if cardsOnTable[index] == cardsTryMatched[ind] {
+//                        cardsOnTable.remove(at: index)
+//                    }
+//                }
+//            }
             cardsRemoved += cardsTryMatched
             cardsTryMatched.removeAll()
         }
@@ -81,6 +92,7 @@ final class GameSet {
         guard isSelected.count == 3 else { return nil }
         cardsTryMatched = isSelected
         isSelected.removeAll()
+        print(Card.isSet(cards: cardsTryMatched))
         return Card.isSet(cards: cardsTryMatched)
 
     }
@@ -89,25 +101,18 @@ final class GameSet {
         if isSet(for: cardsTryMatched) == true {
             score += Constants.win
             setsNumder += 1
+            replaceCards()
         } else {
             score -= Constants.penalty
         }
     }
 
-    func chooseCard(with tag: Int) {
+    func chooseCard() {
 //        assert(cardsOnTable.indices.contains(index), "SetGame.chooseCard(at: \(index)) : Choosen index out of range")
-//        guard let card = cardsOnTable.first(where: { $0.identifier == identifier }) else { return }
-        let card = cardsOnTable[tag]
-        print(card)
+//        let card = cardsOnTable[tag]
         flipCount += 1
-        if isSelected.count < 3 {
-            isSelected.append(card)
-        } else if isSelected.count == 3 {
+        if isSelected.count == 3 {
             winOrPenalty()
-            if isSet(for: isSelected) == true {
-                replaceCards()
-                removeCards()
-            }
         }
     }
 

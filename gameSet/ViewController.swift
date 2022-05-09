@@ -62,26 +62,62 @@ class ViewController: UIViewController {
         for index in cardButtons.indices {
             let button = cardButtons[index]
             if button.tag == sender.tag {
-                if !touchingCards.contains(button), touchingCards.count < 3 {
+                if !touchingCards.contains(button), touchingCards.count <= 3 {
                     touchingCards.append(button)
+                    game.isSelected.append(game.cardsOnTable[button.tag])
                     button.layer.borderWidth = 3.0
                     button.layer.borderColor = UIColor.blue.cgColor
                 } else if touchingCards.contains(button) {
-                    touchingCards = touchingCards.filter { $0 != button}
+                    touchingCards = touchingCards.filter { $0 != button }
+                    game.isSelected = game.isSelected.filter { $0 != game.cardsOnTable[button.tag] }
                     button.layer.borderWidth = 0.0
                     button.layer.borderColor = UIColor.clear.cgColor
                 }
-                if touchingCards.count == 3 {
-                    for card in touchingCards {
-                        card.layer.borderWidth = 3.0
-                        card.layer.borderColor = UIColor.magenta.cgColor
-                    }
-                }
-                print(touchingCards, game.isSelected.count, touchingCards.count)
             }
+
         }
-        game.chooseCard(with: sender.tag)
+        if touchingCards.count == 3 {
+            game.chooseCard()
+            for card in touchingCards {
+                card.layer.borderWidth = 3.0
+                card.layer.borderColor = UIColor.magenta.cgColor
+            }
+            // вот эта часть кода не работает
+            if game.isSet(for: game.isSelected) == true {
+                for card in touchingCards {
+                    card.layer.borderWidth = 3.0
+                    card.layer.borderColor = UIColor.green.cgColor
+
+                }
+//                  } else {
+//                      for card in touchingCards {
+//                          card.layer.borderWidth = 3.0
+//                          card.layer.borderColor = UIColor.red.cgColor
+//                          touchingCards.removeAll()
+//                    }
+//                }
+        }
+//            for card in touchingCards {
+//                card.layer.borderWidth = 0.0
+//                card.layer.borderColor = UIColor.clear.cgColor
+//            }
+            touchingCards.removeAll()
+
     }
+
+//        for card in touchingCards {
+//            if game.isSet(for: game.isSelected) == true {
+//                card.layer.borderWidth = 3.0
+//                card.layer.borderColor = UIColor.green.cgColor
+//                touchingCards.removeAll()
+//            } else if game.isSet(for: game.isSelected) == false {
+//                card.layer.borderWidth = 3.0
+//                card.layer.borderColor = UIColor.red.cgColor
+//                touchingCards.removeAll()
+//            }
+//        }
+    }
+//        print(touchingCards, game.isSelected, touchingCards.count)
 
     func updateViewFromModel() {
 ////
