@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     @IBOutlet private weak var timeLabel: UILabel!
     var howManyCards = 12
     var deck = CardDeck()
+    var touchingCards = [PlayingCardsViewButton]()
 //
     @IBOutlet var cardButtons: [PlayingCardsViewButton]!
 
@@ -38,30 +39,13 @@ class ViewController: UIViewController {
         newGame.backgroundColor = .yellow
     }
 
-//    @IBAction func touchCard(_ sender: PlayingCardsViewButton) {
-//        if let cardNumber = cardButtons.firstIndex(of: sender) {
-//            game.chooseCard()
-//            game.isSelected.append(contentsOf: cardNumber)
-//            for index in cardButtons[index] {
-//                let card = game.isSelected[index]
-//                let button = cardButtons[index]
-//                guard game.isSelected.count < 3 else {}
-//                button.layer.borderWidth = 3.0
-//                button.layer.borderColor = UIColor.blue.cgColor
-//            }
-//        }
-//    }
-
-    func setOrNot () {
-
-    }
-
     func buttonsView() {
         for index in cardButtons.indices {
             let button = cardButtons[index]
             if index < howManyCards {
-                let card = game.cardsOnTable
-                button.setAttributedTitle(button.attributedName(for: card[index], fontSize: 25.0), for: .normal)
+                let card = game.cardsOnTable[button.tag]
+//                button.identifier = card.identifier
+                button.setAttributedTitle(button.attributedName(for: card, fontSize: 25.0), for: .normal)
                 button.isEnabled = true
             } else {
                 button.setTitle("  ", for: .normal)
@@ -72,6 +56,51 @@ class ViewController: UIViewController {
         }
     }
 
+    @IBAction func touchCard(_ sender: PlayingCardsViewButton) {
+
+//        updateViewFromModel()
+        for index in cardButtons.indices {
+            let button = cardButtons[index]
+            if button.tag == sender.tag {
+                if !touchingCards.contains(button), touchingCards.count < 3 {
+                    touchingCards.append(button)
+                    button.layer.borderWidth = 3.0
+                    button.layer.borderColor = UIColor.blue.cgColor
+                } else if touchingCards.contains(button) {
+                    touchingCards = touchingCards.filter { $0 != button}
+                    button.layer.borderWidth = 0.0
+                    button.layer.borderColor = UIColor.clear.cgColor
+                }
+                if touchingCards.count == 3 {
+                    for card in touchingCards {
+                        card.layer.borderWidth = 3.0
+                        card.layer.borderColor = UIColor.magenta.cgColor
+                    }
+                }
+                print(touchingCards, game.isSelected.count, touchingCards.count)
+            }
+        }
+        game.chooseCard(with: sender.tag)
+    }
+
+    func updateViewFromModel() {
+////
+//        for index in game.isSelected.indices {
+//            let button = cardButtons[index]
+//            if button.identifier
+////            let card = game.isSelected[index]
+////            if game.isSelected.count <= 3 {
+//////                if button.identifier == identifier {
+////                    button.layer.borderWidth = 3.0
+////                    button.layer.borderColor = UIColor.blue.cgColor
+//////                }
+////                } else {
+////                    button.layer.borderWidth = 0.0
+////                    button.layer.borderColor = UIColor.clear.cgColor
+////            }
+////        }
+    }
+
     @IBAction private func newGameButton(_ sender: UIButton) {
         howManyCards = 12
         game.flipCount = 0
@@ -79,6 +108,13 @@ class ViewController: UIViewController {
         addThreeCards.backgroundColor = .yellow
         game.newGame()
         buttonsView()
+        for index in cardButtons.indices {
+            let button = cardButtons[index]
+            button.layer.borderWidth = 0.0
+            button.layer.borderColor = UIColor.clear.cgColor
+        }
+        touchingCards.removeAll()
+//        updateViewFromModel()
 
     }
 

@@ -15,6 +15,8 @@ class PlayingCardsViewButton: UIButton {
     let shape = ["●", "◼︎", "▲"]
     let number = [1, 2, 3]
 
+    var identifier: String?
+
     override func draw(_ rect: CGRect) {
         let roundedRect = UIBezierPath(roundedRect: bounds, cornerRadius: 16.0)
         roundedRect.addClip()
@@ -22,7 +24,7 @@ class PlayingCardsViewButton: UIButton {
         roundedRect.fill()
     }
 
-    func attributedName(for card: Cards, fontSize: CGFloat ) -> NSAttributedString {
+    func attributedName(for card: Card, fontSize: CGFloat ) -> NSAttributedString {
         var newString: String = shape[card.shape.rawValue]
         if card.howMany.rawValue == 1 {
             newString = shape[card.shape.rawValue]

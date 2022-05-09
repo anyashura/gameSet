@@ -8,13 +8,7 @@
 import Foundation
 import UIKit
 
-struct Cards: CustomStringConvertible, Equatable {
-
-    var description: String { return ("\(howMany)\(shape)\(fill)\(color)")}
-    var howMany: Variant
-    var shape: Variant
-    var fill: Variant
-    var color: Variant
+struct Card: CustomStringConvertible {
 
     enum Variant: Int {
         case one = 0
@@ -26,7 +20,14 @@ struct Cards: CustomStringConvertible, Equatable {
         var description: Int { return rawValue}
     }
 
-    static func isSet(cards: [Cards]) -> Bool {
+    var description: String { return ("\(howMany)\(shape)\(fill)\(color)")}
+    var howMany: Variant
+    var shape: Variant
+    var fill: Variant
+    var color: Variant
+    let identifier = UUID().uuidString
+
+    static func isSet(cards: [Card]) -> Bool {
         guard cards.count == 3 else { return false }
         let sum = [
         cards.reduce(0, { $0 + $1.howMany.rawValue}),
@@ -35,5 +36,17 @@ struct Cards: CustomStringConvertible, Equatable {
         cards.reduce(0, { $0 + $1.fill.rawValue})
         ]
         return sum.reduce(true, { $0 && ($1 % 3 == 0) })
+    }
+}
+
+extension Card: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(identifier)
+    }
+}
+
+extension Card: Equatable {
+    static func == (lhs: Card, rhs: Card) -> Bool {
+        return lhs.identifier == rhs.identifier
     }
 }

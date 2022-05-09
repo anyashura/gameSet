@@ -9,12 +9,12 @@ import Foundation
 
 final class GameSet {
 
-    var isSelected = [Cards]()
-    var cardsOnTable = [Cards]()
-    var cardsTryMatched = [Cards]()
-    var cardsRemoved = [Cards]()
+    var isSelected = [Card]()
+    var cardsOnTable = [Card]()
+    var cardsTryMatched = [Card]()
+    var cardsRemoved = [Card]()
     var deck = CardDeck()
-    var deckCount: Int {return deck.cards.count}
+    var deckCount: Int { return deck.cards.count }
     var score = 0
     var flipCount = 0
     var setsNumder = 0
@@ -27,7 +27,7 @@ final class GameSet {
         cardsTryMatched.removeAll()
         cardsRemoved.removeAll()
         deck = CardDeck()
-        cardsOnTable = [Cards]()
+        cardsOnTable = [Card]()
         for _ in 1...12 {
          if let card = deck.draw() {
             cardsOnTable += [card]
@@ -35,8 +35,8 @@ final class GameSet {
         }
     }
 
-    func takeThreeCardsFromDeck() -> [Cards]? {
-        var threeCards = [Cards]()
+    func takeThreeCardsFromDeck() -> [Card]? {
+        var threeCards = [Card]()
         for _ in 0...2 {
             if let card = deck.draw() {
                 threeCards += [card]
@@ -72,29 +72,43 @@ final class GameSet {
                     cardsOnTable [indexMatched ] = threeCards[idx]
                 }
             }
+            cardsRemoved += cardsTryMatched
+            cardsTryMatched.removeAll()
         }
-        cardsRemoved += cardsTryMatched
-        cardsTryMatched.removeAll()
     }
 
-    func isSet(for cards: [Cards]) -> Bool? {
+    func isSet(for cards: [Card]) -> Bool? {
         guard isSelected.count == 3 else { return nil }
         cardsTryMatched = isSelected
-        return Cards.isSet(cards: cardsTryMatched)
+        isSelected.removeAll()
+        return Card.isSet(cards: cardsTryMatched)
+
     }
 
     func winOrPenalty() {
         if isSet(for: cardsTryMatched) == true {
-            score += WinOrPenalty.win
+            score += Constants.win
             setsNumder += 1
         } else {
-            score -= WinOrPenalty.penalty
+            score -= Constants.penalty
         }
     }
 
-    func chooseCard (at index: Int) {
-        assert(cardsOnTable.indices.contains(index), "SetGame.chooseCard(at: \(index)) : Choosen index out of range")
-
+    func chooseCard(with tag: Int) {
+//        assert(cardsOnTable.indices.contains(index), "SetGame.chooseCard(at: \(index)) : Choosen index out of range")
+//        guard let card = cardsOnTable.first(where: { $0.identifier == identifier }) else { return }
+        let card = cardsOnTable[tag]
+        print(card)
+        flipCount += 1
+        if isSelected.count < 3 {
+            isSelected.append(card)
+        } else if isSelected.count == 3 {
+            winOrPenalty()
+            if isSet(for: isSelected) == true {
+                replaceCards()
+                removeCards()
+            }
+        }
     }
 
     init() {
@@ -105,7 +119,7 @@ final class GameSet {
         }
     }
 
-    struct WinOrPenalty {
+    struct Constants {
         static let win = 20
         static let penalty = 10
         static let maxTimePenalty = 10

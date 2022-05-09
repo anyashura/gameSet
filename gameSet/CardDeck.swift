@@ -9,21 +9,21 @@ import Foundation
 
 struct CardDeck {
 
-    var cards = [Cards]()
+    var cards = [Card]()
 
         init() {
-            for howMany in Cards.Variant.all {
-                for shape in Cards.Variant.all {
-                    for fill in Cards.Variant.all {
-                        for color in Cards.Variant.all {
-                            cards.append(Cards(howMany: howMany, shape: shape, fill: fill, color: color))
+            for howMany in Card.Variant.all {
+                for shape in Card.Variant.all {
+                    for fill in Card.Variant.all {
+                        for color in Card.Variant.all {
+                            cards.append(Card(howMany: howMany, shape: shape, fill: fill, color: color))
                         }
                     }
                 }
             }
         }
 
-    mutating func draw() -> Cards? {
+    mutating func draw() -> Card? {
         if cards.count > 0 {
             return cards.remove(at: cards.count.arc4random)
         } else {
