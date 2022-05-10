@@ -51,38 +51,23 @@ final class GameSet {
         }
     }
 
-//    func removeCards() {
-//        if isSet(for: isSelected) == true {
-//            for index in cardsOnTable.indices {
-//                for ind in cardsTryMatched.indices {
-//                    if cardsOnTable[index] == cardsTryMatched[ind] {
-//                        cardsOnTable.remove(at: index)
-//                    }
-//                }
-//            }
-//            cardsRemoved += cardsTryMatched
-//            cardsTryMatched.removeAll()
-//        }
-//    }
-
     func replaceCards() {
-        if isSet(for: cardsTryMatched) == true, let threeCards = takeThreeCardsFromDeck() {
+        if let threeCards = takeThreeCardsFromDeck(), threeCards != [] {
             for idx in 0..<3 {
                 if let indexMatched = cardsOnTable.firstIndex(of: cardsTryMatched[idx]) {
                     cardsOnTable[indexMatched] = threeCards[idx]
+                    print(cardsOnTable[indexMatched])
                 }
             }
             cardsRemoved += cardsTryMatched
-            print(cardsTryMatched, cardsRemoved)
+            print(cardsRemoved.count, deckCount)
             cardsTryMatched.removeAll()
         } else {
-//            for index in cardsOnTable.indices {
-//                for ind in cardsTryMatched.indices {
-//                    if cardsOnTable[index] == cardsTryMatched[ind] {
-//                        cardsOnTable.remove(at: index)
-//                    }
-//                }
-//            }
+            for card in cardsTryMatched {
+                if cardsOnTable.contains(card) {
+                    cardsOnTable = cardsOnTable.filter { $0 == card }
+                }
+            }
             cardsRemoved += cardsTryMatched
             cardsTryMatched.removeAll()
         }

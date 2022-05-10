@@ -22,8 +22,7 @@ class ViewController: UIViewController {
     @IBOutlet var cardButtons: [PlayingCardsViewButton]!
 
     @IBAction private func addThreeCardsButton(_ sender: UIButton) {
-        if cardButtons.count > howManyCards {
-            // если сет, то реплэйс, иначе просто добавляем
+        if cardButtons.count > howManyCards, game.deckCount != 0 {
             game.addThreeCardsOnTable()
         } else {
             addThreeCards.backgroundColor = .gray
@@ -44,7 +43,6 @@ class ViewController: UIViewController {
             let button = cardButtons[index]
             if index < howManyCards {
                 let card = game.cardsOnTable[button.tag]
-//                button.identifier = card.identifier
                 button.setAttributedTitle(button.attributedName(for: card, fontSize: 25.0), for: .normal)
                 button.isEnabled = true
             } else {
@@ -82,7 +80,7 @@ class ViewController: UIViewController {
                 card.layer.borderWidth = 3.0
                 card.layer.borderColor = UIColor.magenta.cgColor
             }
-            // вот эта часть кода не работает
+            buttonsView()
             if game.isSet(for: game.isSelected) == true {
                 for card in touchingCards {
                     card.layer.borderWidth = 3.0
@@ -104,6 +102,7 @@ class ViewController: UIViewController {
             touchingCards.removeAll()
 
     }
+    }
 
 //        for card in touchingCards {
 //            if game.isSet(for: game.isSelected) == true {
@@ -116,7 +115,6 @@ class ViewController: UIViewController {
 //                touchingCards.removeAll()
 //            }
 //        }
-    }
 //        print(touchingCards, game.isSelected, touchingCards.count)
 
     func updateViewFromModel() {
