@@ -76,7 +76,6 @@ final class GameSet {
     func isSet(for cards: [Card]) -> Bool? {
         guard isSelected.count == 3 else { return nil }
         cardsTryMatched = isSelected
-        isSelected.removeAll()
         print(Card.isSet(cards: cardsTryMatched))
         return Card.isSet(cards: cardsTryMatched)
 
