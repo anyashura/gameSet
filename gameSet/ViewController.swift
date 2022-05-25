@@ -8,21 +8,30 @@
 import UIKit
 
 class ViewController: UIViewController {
-//    score, timer, clear backround color, replacing cards after set
+//     timer, clear backround color, error when deck is empty
 
     var game = GameSet()
 
     @IBOutlet private weak var scoreLabel: UILabel!
     @IBOutlet private weak var newGame: UIButton!
     @IBOutlet private weak var addThreeCards: UIButton!
+    @IBOutlet weak var setsNumberLabel: UILabel!
     @IBOutlet private weak var timeLabel: UILabel!
+    // howManyCards - количество карт на столе в данный момент
     var howManyCards = 12
-    var deck = CardDeck()
+    // touchingCards - массив с картами, которых коснулись
     var touchingCards = [PlayingCardsViewButton]()
-//
     @IBOutlet var cardButtons: [PlayingCardsViewButton]!
 
     @IBAction private func addThreeCardsButton(_ sender: UIButton) {
+        if touchingCards.count == 0 {
+            for button in cardButtons {
+                button.layer.borderWidth = 0.0
+                button.layer.borderColor = UIColor.clear.cgColor
+            }
+        }
+        // если после сета, то надо заменить сет, а не выдать новые
+
         if cardButtons.count > howManyCards, game.deckCount != 0 {
             game.addThreeCardsOnTable()
         } else {
@@ -40,6 +49,7 @@ class ViewController: UIViewController {
     }
 
     func buttonsView() {
+        // расположение фигур на карточке, замена в случае replace
         for index in cardButtons.indices {
             let button = cardButtons[index]
             if index < howManyCards {
@@ -57,15 +67,17 @@ class ViewController: UIViewController {
     }
 
     @IBAction func touchCard(_ sender: PlayingCardsViewButton) {
-//        updateViewFromModel()
+        buttonsView()
+        // чтобы после выбора 3х карт убиралось выделение карт
         if touchingCards.count == 0 {
             for button in cardButtons {
                 button.layer.borderWidth = 0.0
                 button.layer.borderColor = UIColor.clear.cgColor
             }
         }
+        // выделение карт, которых касаемся
         for button in cardButtons {
-            if button.tag == sender.tag {
+            if button == sender {
                 if !touchingCards.contains(button) {
                     touchingCards.append(button)
                     game.isSelected.append(game.cardsOnTable[button.tag])
@@ -79,9 +91,9 @@ class ViewController: UIViewController {
                 }
             }
         }
+        // проверка сет или нет
         if touchingCards.count == 3 {
             game.chooseCard()
-            buttonsView()
             for card in touchingCards {
                 card.layer.borderWidth = 3.0
                 card.layer.borderColor = game.isSet(for: game.isSelected) == true ? UIColor.green.cgColor : UIColor.red.cgColor
@@ -89,27 +101,25 @@ class ViewController: UIViewController {
             touchingCards.removeAll()
             game.isSelected.removeAll()
         }
+        scoreLabel.text = "Score: \(game.score)"
+        setsNumberLabel.text = "Sets: \(game.setsNumder)"
     }
 
-    func updateViewFromModel() {
-
-    }
+//    func updateViewFromModel() {
+//
+//    }
 
     @IBAction private func newGameButton(_ sender: UIButton) {
         howManyCards = 12
-        game.flipCount = 0
         game.score = 0
         addThreeCards.backgroundColor = .yellow
         game.newGame()
         buttonsView()
-        for index in cardButtons.indices {
-            let button = cardButtons[index]
+        for button in cardButtons {
             button.layer.borderWidth = 0.0
             button.layer.borderColor = UIColor.clear.cgColor
         }
         touchingCards.removeAll()
-//        updateViewFromModel()
-
+        game.isSelected.removeAll()
     }
-
 }

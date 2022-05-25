@@ -16,12 +16,10 @@ final class GameSet {
     var deck = CardDeck()
     var deckCount: Int { return deck.cards.count }
     var score = 0
-    var flipCount = 0
     var setsNumder = 0
 
     func newGame() {
         score = 0
-        flipCount = 0
         setsNumder = 0
         isSelected.removeAll()
         cardsTryMatched.removeAll()
@@ -76,7 +74,6 @@ final class GameSet {
     func isSet(for cards: [Card]) -> Bool? {
         guard isSelected.count == 3 else { return nil }
         cardsTryMatched = isSelected
-        print(Card.isSet(cards: cardsTryMatched))
         return Card.isSet(cards: cardsTryMatched)
 
     }
@@ -93,8 +90,6 @@ final class GameSet {
 
     func chooseCard() {
 //        assert(cardsOnTable.indices.contains(index), "SetGame.chooseCard(at: \(index)) : Choosen index out of range")
-//        let card = cardsOnTable[tag]
-        flipCount += 1
         if isSelected.count == 3 {
             winOrPenalty()
         }
@@ -112,6 +107,10 @@ final class GameSet {
         static let win = 20
         static let penalty = 10
         static let maxTimePenalty = 10
+    }
+
+    struct Date {
+
     }
 
 }
