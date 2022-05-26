@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B5231A5F27E715DA0098618A /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5231A5E27E715DA0098618A /* Card.swift */; };
+		B5231A6327E71EFB0098618A /* CardDeck.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5231A6227E71EFB0098618A /* CardDeck.swift */; };
+		B5231A8D27EE2ACE0098618A /* PlayingCardsViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5231A8C27EE2ACE0098618A /* PlayingCardsViewButton.swift */; };
+		B56A3D4F27F0EBB700AC6B4C /* GameSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56A3D4E27F0EBB700AC6B4C /* GameSet.swift */; };
 		B5A44F1F27E6521700604026 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A44F1E27E6521700604026 /* AppDelegate.swift */; };
 		B5A44F2127E6521700604026 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A44F2027E6521700604026 /* SceneDelegate.swift */; };
 		B5A44F2327E6521700604026 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A44F2227E6521700604026 /* ViewController.swift */; };
@@ -16,6 +20,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B5231A5E27E715DA0098618A /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		B5231A6227E71EFB0098618A /* CardDeck.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDeck.swift; sourceTree = "<group>"; };
+		B5231A8C27EE2ACE0098618A /* PlayingCardsViewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingCardsViewButton.swift; sourceTree = "<group>"; };
+		B56A3D4E27F0EBB700AC6B4C /* GameSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSet.swift; sourceTree = "<group>"; };
 		B5A44F1B27E6521700604026 /* gameSet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gameSet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5A44F1E27E6521700604026 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5A44F2027E6521700604026 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -56,15 +64,27 @@
 		B5A44F1D27E6521700604026 /* gameSet */ = {
 			isa = PBXGroup;
 			children = (
+				B5D0A8A127FA35E700DDE953 /* Supporting Files */,
+				B5A44F2927E6521800604026 /* LaunchScreen.storyboard */,
+				B5A44F3227E652BE00604026 /* Main.storyboard */,
+				B5A44F2C27E6521800604026 /* Info.plist */,
 				B5A44F1E27E6521700604026 /* AppDelegate.swift */,
 				B5A44F2027E6521700604026 /* SceneDelegate.swift */,
+				B5231A8C27EE2ACE0098618A /* PlayingCardsViewButton.swift */,
+				B5231A6227E71EFB0098618A /* CardDeck.swift */,
+				B56A3D4E27F0EBB700AC6B4C /* GameSet.swift */,
+				B5231A5E27E715DA0098618A /* Card.swift */,
 				B5A44F2227E6521700604026 /* ViewController.swift */,
-				B5A44F3227E652BE00604026 /* Main.storyboard */,
-				B5A44F2727E6521800604026 /* Assets.xcassets */,
-				B5A44F2927E6521800604026 /* LaunchScreen.storyboard */,
-				B5A44F2C27E6521800604026 /* Info.plist */,
 			);
 			path = gameSet;
+			sourceTree = "<group>";
+		};
+		B5D0A8A127FA35E700DDE953 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B5A44F2727E6521800604026 /* Assets.xcassets */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -77,6 +97,7 @@
 				B5A44F1727E6521700604026 /* Sources */,
 				B5A44F1827E6521700604026 /* Frameworks */,
 				B5A44F1927E6521700604026 /* Resources */,
+				B5D0A89E27FA2DE600DDE953 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -133,14 +154,38 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		B5D0A89E27FA2DE600DDE953 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint autocorrect\nelse\n  echo \"error: SwiftLint does not exist, download it from https://github.com/realm/SwiftLint\"\n  exit 1\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		B5A44F1727E6521700604026 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B56A3D4F27F0EBB700AC6B4C /* GameSet.swift in Sources */,
 				B5A44F2327E6521700604026 /* ViewController.swift in Sources */,
+				B5231A6327E71EFB0098618A /* CardDeck.swift in Sources */,
+				B5231A8D27EE2ACE0098618A /* PlayingCardsViewButton.swift in Sources */,
 				B5A44F1F27E6521700604026 /* AppDelegate.swift in Sources */,
 				B5A44F2127E6521700604026 /* SceneDelegate.swift in Sources */,
+				B5231A5F27E715DA0098618A /* Card.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
