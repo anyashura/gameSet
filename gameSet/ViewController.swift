@@ -8,118 +8,118 @@
 import UIKit
 
 class ViewController: UIViewController {
-//     timer, clear backround color, error when deck is empty
 
-    var game = GameSet()
+    // MARK: Private
 
     @IBOutlet private weak var scoreLabel: UILabel!
-    @IBOutlet private weak var newGame: UIButton!
-    @IBOutlet private weak var addThreeCards: UIButton!
-    @IBOutlet weak var setsNumberLabel: UILabel!
+    @IBOutlet private weak var newGameButton: UIButton!
+    @IBOutlet private weak var addThreeCardsButton: UIButton!
+    @IBOutlet private weak var numberOfSetsLabel: UILabel!
     @IBOutlet private weak var timeLabel: UILabel!
-    // howManyCards - количество карт на столе в данный момент
-    var howManyCards = 12
-    // touchingCards - массив с картами, которых коснулись
-    var touchingCards = [PlayingCardsViewButton]()
-    @IBOutlet var cardButtons: [PlayingCardsViewButton]!
+    @IBOutlet private var cardButtons: [PlayingCardsViewButton]!
 
-    @IBAction private func addThreeCardsButton(_ sender: UIButton) {
-        if touchingCards.count == 0 {
-            for button in cardButtons {
-                button.layer.borderWidth = 0.0
-                button.layer.borderColor = UIColor.clear.cgColor
-            }
-        }
-        // если после сета, то надо заменить сет, а не выдать новые
+    private let game = GameSet()
 
-        if cardButtons.count > howManyCards, game.deckCount != 0 {
-            game.addThreeCardsOnTable()
-        } else {
-            addThreeCards.backgroundColor = .gray
-        }
-        howManyCards += 3
-        buttonsView()
-    }
+    private var countOfCardsOnTable = 12
+    private var selectedCards = [PlayingCardsViewButton]()
+
+    // MARK: Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        buttonsView()
-        addThreeCards.backgroundColor = .yellow
-        newGame.backgroundColor = .yellow
+        configureButtons()
+        addThreeCardsButton.backgroundColor = .yellow
+        newGameButton.backgroundColor = .yellow
+        scoreLabel.text = "Score: \(game.score)"
+        numberOfSetsLabel.text = "Sets: \(game.setsNumber)"
     }
 
-    func buttonsView() {
+    // MARK: Actions
+
+    @IBAction private func addThreeCards(_ sender: UIButton) {
+        if selectedCards.count == 0 {
+            deleteSelection()
+        }
+        if cardButtons.count > countOfCardsOnTable {
+            game.addThreeCardsOnTable()
+            countOfCardsOnTable += 3
+            configureButtons()
+        } else {
+            addThreeCardsButton.backgroundColor = .gray
+        }
+    }
+
+    @IBAction private func touchCard(_ sender: PlayingCardsViewButton) {
+        configureButtons()
+        // чтобы после выбора 3х карт убиралось выделение карт
+        if selectedCards.count == 0 {
+            deleteSelection()
+        }
+        guard let button = cardButtons.first(where: { $0 == sender }) else { return }
+        selectCards(for: button)
+        game.selectOrDeselectCards(index: button.tag)
+        checkSetOrNot()
+    }
+
+    @IBAction private func startNewGame(_ sender: UIButton) {
+        countOfCardsOnTable = 12
+        selectedCards.removeAll()
+        addThreeCardsButton.backgroundColor = .yellow
+        deleteSelection()
+        game.startNewGame()
+        scoreLabel.text = "Score: \(game.score)"
+        numberOfSetsLabel.text = "Sets: \(game.setsNumber)"
+        configureButtons()
+    }
+
+    private func configureButtons() {
         // расположение фигур на карточке, замена в случае replace
         for index in cardButtons.indices {
             let button = cardButtons[index]
-            if index < howManyCards {
+            button.layer.cornerRadius = 16.0
+            button.clipsToBounds = true
+            if index < countOfCardsOnTable {
                 let card = game.cardsOnTable[button.tag]
-                button.setAttributedTitle(button.attributedName(for: card, fontSize: 25.0), for: .normal)
+                button.backgroundColor = .white
+                button.setAttributedTitle(button.attributedName(for: card, fontSize: 25.0), for: .normal) // button.setAttributedTitle(for card: Card)
                 button.isEnabled = true
             } else {
-                button.setTitle("  ", for: .normal)
-                button.setAttributedTitle(NSAttributedString("  "), for: .normal)
-                // почему фон не становится прозрачным?
+                button.setTitle(" ", for: .normal)
+                button.setAttributedTitle(NSAttributedString(" "), for: .normal)
                 button.backgroundColor = .clear
                 button.isEnabled = false
             }
         }
     }
 
-    @IBAction func touchCard(_ sender: PlayingCardsViewButton) {
-        buttonsView()
-        // чтобы после выбора 3х карт убиралось выделение карт
-        if touchingCards.count == 0 {
-            for button in cardButtons {
-                button.layer.borderWidth = 0.0
-                button.layer.borderColor = UIColor.clear.cgColor
-            }
-        }
-        // выделение карт, которых касаемся
-        for button in cardButtons {
-            if button == sender {
-                if !touchingCards.contains(button) {
-                    touchingCards.append(button)
-                    game.isSelected.append(game.cardsOnTable[button.tag])
-                    button.layer.borderWidth = 3.0
-                    button.layer.borderColor = UIColor.blue.cgColor
-                } else {
-                    touchingCards = touchingCards.filter { $0 != button }
-                    game.isSelected = game.isSelected.filter { $0 != game.cardsOnTable[button.tag] }
-                    button.layer.borderWidth = 0.0
-                    button.layer.borderColor = UIColor.clear.cgColor
-                }
-            }
-        }
-        // проверка сет или нет
-        if touchingCards.count == 3 {
-            game.chooseCard()
-            for card in touchingCards {
-                card.layer.borderWidth = 3.0
-                card.layer.borderColor = game.isSet(for: game.isSelected) == true ? UIColor.green.cgColor : UIColor.red.cgColor
-            }
-            touchingCards.removeAll()
-            game.isSelected.removeAll()
-        }
-        scoreLabel.text = "Score: \(game.score)"
-        setsNumberLabel.text = "Sets: \(game.setsNumder)"
+    private func selectCards(for button: PlayingCardsViewButton ) {
+        let isCardSelected = selectedCards.contains(button)
+        isCardSelected ? selectedCards.removeAll(where: { $0 == button }) : selectedCards.append(button)
+        button.layer.borderWidth = isCardSelected ? 0.0 : 3.0
+        button.layer.borderColor = isCardSelected ? UIColor.clear.cgColor : UIColor.blue.cgColor
     }
 
-//    func updateViewFromModel() {
-//
-//    }
+    private func checkSetOrNot() {
+        guard selectedCards.count == 3 else { return }
+        let isSet =  game.isSet()
+        for card in selectedCards {
+            card.layer.borderWidth = 3.0
+            card.layer.borderColor = isSet ? UIColor.green.cgColor : UIColor.red.cgColor
+            card.isEnabled = isSet ? false : true
+        }
+        selectedCards.removeAll()
+        game.deselectAll()
+        scoreLabel.text = "Score: \(game.score)"
+        numberOfSetsLabel.text = "Sets: \(game.setsNumber)"
+    }
 
-    @IBAction private func newGameButton(_ sender: UIButton) {
-        howManyCards = 12
-        game.score = 0
-        addThreeCards.backgroundColor = .yellow
-        game.newGame()
-        buttonsView()
+    private func deleteSelection() {
         for button in cardButtons {
             button.layer.borderWidth = 0.0
             button.layer.borderColor = UIColor.clear.cgColor
         }
-        touchingCards.removeAll()
-        game.isSelected.removeAll()
     }
 }
+
+// all game's methods except here –> private
+// all game's methods used here –> private if possible
