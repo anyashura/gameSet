@@ -25,7 +25,7 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Add 3 cards" buttonSize="medium"/>
                                         <connections>
-                                            <action selector="addThreeCardsButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Htt-jg-ID8"/>
+                                            <action selector="addThreeCards:" destination="BYZ-38-t0r" eventType="touchUpInside" id="AgU-qH-5mS"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xi6-t0-Px6">
@@ -38,7 +38,7 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="New game"/>
                                         <connections>
-                                            <action selector="newGameButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XCi-16-yip"/>
+                                            <action selector="startNewGame:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zzp-k7-sAA"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1237,10 +1237,10 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="addThreeCards" destination="cWa-nG-xu5" id="QMZ-3Y-jEo"/>
-                        <outlet property="newGame" destination="Xi6-t0-Px6" id="8gY-yK-Ggq"/>
+                        <outlet property="addThreeCardsButton" destination="cWa-nG-xu5" id="HDO-wc-61z"/>
+                        <outlet property="newGameButton" destination="Xi6-t0-Px6" id="scw-pN-Iyz"/>
+                        <outlet property="numberOfSetsLabel" destination="xZN-GH-6OQ" id="9eB-he-ld1"/>
                         <outlet property="scoreLabel" destination="8fY-dy-edV" id="sgI-KX-Vo2"/>
-                        <outlet property="setsNumberLabel" destination="xZN-GH-6OQ" id="bES-Tq-67u"/>
                         <outlet property="timeLabel" destination="HZI-hS-XNU" id="jmO-o0-eaO"/>
                         <outletCollection property="cardButtons" destination="iPA-pi-aXS" collectionClass="NSMutableArray" id="p8S-Yd-tL8"/>
                         <outletCollection property="cardButtons" destination="BrG-Bg-dks" collectionClass="NSMutableArray" id="yF5-Dj-DQc"/>

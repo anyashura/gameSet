@@ -18,10 +18,10 @@ class PlayingCardsViewButton: UIButton {
     var identifier: String?
 
     override func draw(_ rect: CGRect) {
-        let roundedRect = UIBezierPath(roundedRect: bounds, cornerRadius: 16.0)
-        roundedRect.addClip()
-        UIColor.white.setFill()
-        roundedRect.fill()
+//        let roundedRect = UIBezierPath(roundedRect: bounds, cornerRadius: 16.0)
+//        roundedRect.addClip()
+//        UIColor.white.setFill()
+//        roundedRect.fill()
     }
 
     func attributedName(for card: Card, fontSize: CGFloat ) -> NSAttributedString {
