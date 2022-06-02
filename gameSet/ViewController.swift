@@ -19,7 +19,6 @@ class ViewController: UIViewController {
     @IBOutlet private var cardButtons: [PlayingCardsViewButton]!
 
     private let game = GameSet()
-
     private var countOfCardsOnTable = 12
     private var selectedCards = [PlayingCardsViewButton]()
 
@@ -56,8 +55,8 @@ class ViewController: UIViewController {
             deleteSelection()
         }
         guard let button = cardButtons.first(where: { $0 == sender }) else { return }
-        selectCards(for: button)
-        game.selectOrDeselectCards(index: button.tag)
+        selectCard(for: button)
+        game.selectOrDeselectCard(index: button.tag)
         checkSetOrNot()
     }
 
@@ -79,9 +78,10 @@ class ViewController: UIViewController {
             button.layer.cornerRadius = 16.0
             button.clipsToBounds = true
             if index < countOfCardsOnTable {
+                print(game.cardsOnTable[button.tag])
                 let card = game.cardsOnTable[button.tag]
                 button.backgroundColor = .white
-                button.setAttributedTitle(button.attributedName(for: card, fontSize: 25.0), for: .normal) // button.setAttributedTitle(for card: Card)
+                button.setAttributedTitle(for: card)
                 button.isEnabled = true
             } else {
                 button.setTitle(" ", for: .normal)
@@ -92,7 +92,7 @@ class ViewController: UIViewController {
         }
     }
 
-    private func selectCards(for button: PlayingCardsViewButton ) {
+    private func selectCard(for button: PlayingCardsViewButton ) {
         let isCardSelected = selectedCards.contains(button)
         isCardSelected ? selectedCards.removeAll(where: { $0 == button }) : selectedCards.append(button)
         button.layer.borderWidth = isCardSelected ? 0.0 : 3.0
@@ -101,14 +101,13 @@ class ViewController: UIViewController {
 
     private func checkSetOrNot() {
         guard selectedCards.count == 3 else { return }
-        let isSet =  game.isSet()
+        let isSet = game.isSet()
         for card in selectedCards {
             card.layer.borderWidth = 3.0
             card.layer.borderColor = isSet ? UIColor.green.cgColor : UIColor.red.cgColor
             card.isEnabled = isSet ? false : true
         }
         selectedCards.removeAll()
-        game.deselectAll()
         scoreLabel.text = "Score: \(game.score)"
         numberOfSetsLabel.text = "Sets: \(game.setsNumber)"
     }
@@ -121,5 +120,4 @@ class ViewController: UIViewController {
     }
 }
 
-// all game's methods except here –> private
-// all game's methods used here –> private if possible
+// посмотри, пожалуйста, предупреждение про фон при билдинге, как изменить на dynamic type text style?

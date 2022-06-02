@@ -17,14 +17,7 @@ class PlayingCardsViewButton: UIButton {
 
     var identifier: String?
 
-    override func draw(_ rect: CGRect) {
-//        let roundedRect = UIBezierPath(roundedRect: bounds, cornerRadius: 16.0)
-//        roundedRect.addClip()
-//        UIColor.white.setFill()
-//        roundedRect.fill()
-    }
-
-    func attributedName(for card: Card, fontSize: CGFloat ) -> NSAttributedString {
+    func setAttributedTitle(for card: Card) {
         var newString: String = shape[card.shape.rawValue]
         if card.howMany.rawValue == 1 {
             newString = shape[card.shape.rawValue]
@@ -34,8 +27,9 @@ class PlayingCardsViewButton: UIButton {
             newString = shape[card.shape.rawValue] + shape[card.shape.rawValue] + shape[card.shape.rawValue]
         }
         let attributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: colors[card.color.rawValue].withAlphaComponent(withAlpha[card.fill.rawValue]), .strokeWidth: strokeWidths[card.fill.rawValue], .strokeColor: colors[card.color.rawValue], .font: UIFont.preferredFont(forTextStyle: .body).withSize(fontSize)]
+            .foregroundColor: colors[card.color.rawValue].withAlphaComponent(withAlpha[card.fill.rawValue]), .strokeWidth: strokeWidths[card.fill.rawValue], .strokeColor: colors[card.color.rawValue], .font: UIFont.preferredFont(forTextStyle: .body).withSize(25.0)]
 
-        return NSAttributedString(string: newString, attributes: attributes)
+        let name = NSAttributedString(string: newString, attributes: attributes)
+        setAttributedTitle(name, for: .normal)
     }
 }
