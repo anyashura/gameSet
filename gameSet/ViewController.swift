@@ -19,7 +19,7 @@ class ViewController: UIViewController {
     @IBOutlet private var cardButtons: [PlayingCardsViewButton]!
 
     private let game = GameSet()
-    private var countOfCardsOnTable = 12
+//    private var countOfCardsOnTable = 12
     private var selectedCards = [PlayingCardsViewButton]()
 
     // MARK: Lifecycle
@@ -39,9 +39,9 @@ class ViewController: UIViewController {
         if selectedCards.count == 0 {
             deleteSelection()
         }
-        if cardButtons.count > countOfCardsOnTable {
+        if cardButtons.count > game.countOfCardsOnTable {
             game.addThreeCardsOnTable()
-            countOfCardsOnTable += 3
+
             configureButtons()
         } else {
             addThreeCardsButton.backgroundColor = .gray
@@ -61,7 +61,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction private func startNewGame(_ sender: UIButton) {
-        countOfCardsOnTable = 12
+        game.countOfCardsOnTable = 12
         selectedCards.removeAll()
         addThreeCardsButton.backgroundColor = .yellow
         deleteSelection()
@@ -77,8 +77,7 @@ class ViewController: UIViewController {
             let button = cardButtons[index]
             button.layer.cornerRadius = 16.0
             button.clipsToBounds = true
-            if index < countOfCardsOnTable {
-                print(game.cardsOnTable[button.tag])
+            if index < game.countOfCardsOnTable {
                 let card = game.cardsOnTable[button.tag]
                 button.backgroundColor = .white
                 button.setAttributedTitle(for: card)
@@ -92,7 +91,7 @@ class ViewController: UIViewController {
         }
     }
 
-    private func selectCard(for button: PlayingCardsViewButton ) {
+    private func selectCard(for button: PlayingCardsViewButton) {
         let isCardSelected = selectedCards.contains(button)
         isCardSelected ? selectedCards.removeAll(where: { $0 == button }) : selectedCards.append(button)
         button.layer.borderWidth = isCardSelected ? 0.0 : 3.0
