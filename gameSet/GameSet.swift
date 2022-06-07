@@ -15,14 +15,14 @@ final class GameSet {
         static let maxTimePenalty = 10
     }
 
+    var countOfCardsOnTable = 12
+
     private(set) var cardsOnTable = [Card]()
     private(set) var score = 0
     private(set) var setsNumber = 0
 
     private var deck = CardDeck()
     private var selectedCards = [Card]()
-    private var cardsTryMatched = [Card]() // TODO: - remove
-    private var cardsRemoved = [Card]() // TODO: - remove
     private var isSetOnTable = false
 
     init() {
@@ -33,46 +33,36 @@ final class GameSet {
         }
     }
 
+    // private ???
     func isSet() -> Bool {
         Card.isSet(cards: selectedCards)
     }
 
     func selectOrDeselectCard(index: Int) {
+        if selectedCards.count == 3 { selectedCards.removeAll(); isSetOnTable = false }
+
         if selectedCards.contains(cardsOnTable[index]) {
             deleteFromSelectedCards(index: index)
         } else {
             selectedCards.append(cardsOnTable[index])
         }
-        if selectedCards.count == 3 {
-            winOrPenalty()
-        }
-        if isSetOnTable {
-            selectedCards.removeAll()
-            isSetOnTable = false
-        }
-        if isSet() {
-            replaceCardsOnTable()
-            isSetOnTable = true
-        }
+        checkSet()
     }
 
     func addThreeCardsOnTable() {
-        if isSet() {
-            replaceCardsOnTable()
-        } else {
-            let threeCards = takeThreeCardsFromDeck()
-            if deck.cards.count != 0 {
-                cardsOnTable += threeCards
-            }
+        guard isSetOnTable == false else { return isSetOnTable = false }
+        let threeCards = takeThreeCardsFromDeck()
+        if deck.cards.count != 0 {
+            cardsOnTable += threeCards
+            countOfCardsOnTable += 3
         }
     }
 
     func startNewGame() {
         score = 0
         setsNumber = 0
+        isSetOnTable = false
         selectedCards.removeAll()
-        cardsTryMatched.removeAll()
-        cardsRemoved.removeAll()
         deck = CardDeck()
         cardsOnTable.removeAll()
         for _ in 1...12 {
@@ -90,20 +80,16 @@ final class GameSet {
         var threeCards = takeThreeCardsFromDeck()
         guard threeCards.isEmpty == false else { return }
 
-//        for card in selectedCards {
-            for idx in 0..<3 {
-                if let indexMatched = cardsOnTable.firstIndex(of: selectedCards[idx]) {
-                    cardsOnTable[indexMatched] = threeCards[idx]
-                }
+        selectedCards.forEach {
+            if let indexMatched = cardsOnTable.firstIndex(of: $0) {
+                cardsOnTable[indexMatched] = threeCards.removeLast()
             }
+        }
+
 //            if let index = cardsOnTable.firstIndex(of: card) {
 //                cardsOnTable[index] = threeCards.removeFirst() // удобные ф-ии поиска и замены карт
 //            }
 //        }
-
-        cardsRemoved += cardsTryMatched
-        print(cardsRemoved.count, deck.cards.count)
-        cardsTryMatched.removeAll()
 
 //        } else {
 //            for card in cardsTryMatched {
@@ -116,7 +102,16 @@ final class GameSet {
 //        }
     }
 
-    private func winOrPenalty() {
+    private func checkSet() {
+        guard selectedCards.count == 3 else { return }
+        if isSet() {
+            isSetOnTable = true
+            replaceCardsOnTable()
+        }
+        changeScore()
+    }
+
+    private func changeScore() {
         if isSet() {
             score += Constant.win
             setsNumber += 1
